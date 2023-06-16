@@ -14,7 +14,5 @@ def SendMessage(message):
     localhost.sendto(message_length, (recipient_ip, util.PORT))
     localhost.sendto(message, (recipient_ip, util.PORT))
 
-localhost.listen()
 while True:
     SendMessage(input("Enter your message: "))
-    
