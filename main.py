@@ -8,11 +8,11 @@ HEADER = 64
 FORMAT = "utf-8"
 DISCONNECT_MESSAGE = "disconnect"
 
-# TODO: make this idiot-proof
-recipient_ip = input("IP Address: ")
-
 localhost = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 localhost.bind((LOCALHOST_IP, PORT))
+
+# TODO: make this idiot-proof
+recipient_ip = input("IP Address: ")
 localhost.connect((recipient_ip, PORT))
 
 def ReceiveMessage(connection, address):
