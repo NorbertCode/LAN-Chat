@@ -11,8 +11,8 @@ def SendMessage(message):
     message = message.encode(util.FORMAT)
     message_length = str(len(message)).encode(util.FORMAT)
     message_length += b' ' * (util.HEADER - len(message_length))
-    localhost.sendto(message_length, (recipient_ip, util.PORT))
-    localhost.sendto(message, (recipient_ip, util.PORT))
+    localhost.send(message_length)
+    localhost.send(message)
 
 while True:
     SendMessage(input("Enter your message: "))
