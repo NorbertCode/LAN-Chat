@@ -2,10 +2,8 @@ import socket
 import threading
 import utility as util
 
-LOCALHOST_IP = socket.gethostbyname(socket.gethostname())
-
 localhost = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-localhost.bind((LOCALHOST_IP, util.PORT))
+localhost.bind(('0.0.0.0', util.PORT))
 
 def ReceiveMessage(connection, address):
     while True:
