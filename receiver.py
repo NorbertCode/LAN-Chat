@@ -27,3 +27,5 @@ def Start():
         thread = threading.Thread(target=ReceiveMessage, args=(connection, address))
         thread.start()
     
+if __name__ == '__main__':
+    Start()
