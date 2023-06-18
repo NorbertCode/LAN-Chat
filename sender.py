@@ -1,11 +1,7 @@
 import socket
 import utility as util
 
-# TODO: make this idiot-proof
-recipient_ip = input("IP Address: ")
-
 localhost = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-localhost.connect((recipient_ip, util.PORT))
 
 def SendMessage(message):
     message = message.encode(util.FORMAT)
@@ -14,5 +10,9 @@ def SendMessage(message):
     localhost.send(message_length)
     localhost.send(message)
 
-while True:
-    SendMessage(input("Enter your message: "))
+def Start():
+    # TODO: make this idiot-proof
+    recipient_ip = input("IP Address: ")
+    localhost.connect((recipient_ip, util.PORT))
+    while True:
+        SendMessage(input("Enter your message: "))

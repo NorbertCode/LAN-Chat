@@ -15,13 +15,15 @@ def ReceiveMessage(connection, address):
             if message == util.DISCONNECT_MESSAGE:
                 break
 
-            print(f"<{address}>: {message}")
+            print(f"\n<{address[0]}>: {message}")
     connection.close()
 
-localhost.listen()
-print("[Started Receiving]")
-while True:
-    connection, address = localhost.accept()
-    thread = threading.Thread(target=ReceiveMessage, args=(connection, address))
-    thread.start()
+
+def Start():
+    localhost.listen()
+    print("[Started Receiving]")
+    while True:
+        connection, address = localhost.accept()
+        thread = threading.Thread(target=ReceiveMessage, args=(connection, address))
+        thread.start()
     
