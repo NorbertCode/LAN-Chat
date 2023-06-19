@@ -31,8 +31,9 @@ def EnterMessage(message):
     entry.delete(0, "end")
 
 def SendMessage():
-    EnterMessage(entry.get())
-    sendThread = threading.Thread(target=lambda: sender.SendMessage(entry.get()))
+    message = entry.get()
+    EnterMessage(message)
+    sendThread = threading.Thread(target=lambda: sender.SendMessage(message))
     sendThread.start()
 
 # Create a button to send messages
