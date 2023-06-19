@@ -9,6 +9,7 @@ root.geometry("400x500")
 
 # Create an entry box to type messages
 ip_field = tk.Entry(root, width=50)
+ip_field.bind("<Return>", (lambda event: sender.Start(ip_field.get())))
 ip_field.pack(pady=10)
 
 # Create a button to send messages
@@ -18,10 +19,6 @@ connect_button.pack()
 # Create a text box to display messages
 messages = tk.Text(root, state="disabled", height=20, width=50)
 messages.pack(pady=10)
-
-# Create an entry box to type messages
-entry = tk.Entry(root, width=50)
-entry.pack(pady=10)
 
 # Function to write content into textbox
 def EnterMessage(message):
@@ -35,6 +32,11 @@ def SendMessage():
     EnterMessage(message)
     sendThread = threading.Thread(target=lambda: sender.SendMessage(message))
     sendThread.start()
+
+# Create an entry box to type messages
+entry = tk.Entry(root, width=50)
+entry.bind("<Return>", (lambda event: SendMessage()))
+entry.pack(pady=10)
 
 # Create a button to send messages
 send_button = tk.Button(root, text="Send", command=SendMessage, width=10)
