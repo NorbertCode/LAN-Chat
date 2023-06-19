@@ -18,19 +18,9 @@ def Disconnect():
 localhost = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 atexit.register(Disconnect) # If the user exits send a disconnect message
 
-def Start():
-    # Loop this, so if you disconnect or lose connection you can try again
-    while True:
-        # TODO: make this idiot-proof
-        recipient_ip = input("IP Address: ")
-        
-        localhost.connect((recipient_ip, util.PORT))
-        while True:
-            try:
-                SendMessage(input("Enter your message: "))
-            except:
-                print("An error occured while trying to reach the destination.")
-                break
+def Start(ip):
+    localhost.connect((ip, util.PORT))
+    print(f"Connected to {ip}")
 
 if __name__ == '__main__':
     Start()
