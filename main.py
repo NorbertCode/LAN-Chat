@@ -27,10 +27,9 @@ def EnterMessage(message):
     messages.configure(state="disabled")
     entry.delete(0, "end")
 
+# Tells sender.py to send a message (Actually entering it is handled inside sender.py)
 def SendMessage():
-    message = entry.get()
-    EnterMessage(message)
-    sendThread = threading.Thread(target=lambda: sender.SendMessage(message))
+    sendThread = threading.Thread(target=lambda: sender.SendMessage(entry.get()))
     sendThread.start()
 
 # Create an entry box to type messages
@@ -41,6 +40,8 @@ entry.pack(pady=10)
 # Create a button to send messages
 send_button = tk.Button(root, text="Send", command=SendMessage, width=10)
 send_button.pack()
+
+sender.SetOnSend(EnterMessage)
 
 # Start this in a thread so you can receive and send at the same time
 receiver.SetOnReceive(EnterMessage)

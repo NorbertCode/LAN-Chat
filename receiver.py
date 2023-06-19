@@ -25,9 +25,12 @@ def ReceiveMessage(connection, address, onReceive):
 def Start():
     localhost.listen()
     while True:
-        connection, address = localhost.accept()
-        thread = threading.Thread(target=ReceiveMessage, args=(connection, address, onReceive))
-        thread.start()
+        try:
+            connection, address = localhost.accept()
+            thread = threading.Thread(target=ReceiveMessage, args=(connection, address, onReceive))
+            thread.start()
+        except:
+            onReceive("An error has occured")
     
 if __name__ == '__main__':
     Start()
