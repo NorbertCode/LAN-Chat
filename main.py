@@ -7,16 +7,15 @@ import sender
 root = tk.Tk()
 root.geometry("400x500")
 
-# Create an entry box to type messages
+# Create an entry box to connect to an IP
 ip_field = tk.Entry(root, width=50)
-ip_field.bind("<Return>", (lambda event: sender.Start(ip_field.get())))
 ip_field.pack(pady=10)
 
-# Create a button to send messages
-connect_button = tk.Button(root, text="Connect", command=lambda: sender.Start(ip_field.get()), width=10)
+# Button to connect to an IP
+connect_button = tk.Button(root, text="Connect", width=10)
 connect_button.pack()
 
-# Create a text box to display messages
+# Textbox to display messages
 messages = tk.Text(root, state="disabled", height=20, width=50)
 messages.pack(pady=10)
 
@@ -27,23 +26,23 @@ def EnterMessage(message):
     messages.configure(state="disabled")
     entry.delete(0, "end")
 
-# Tells sender.py to send a message (Actually entering it is handled inside sender.py)
-def SendMessage():
-    sendThread = threading.Thread(target=lambda: sender.SendMessage(entry.get()))
-    sendThread.start()
-
-# Create an entry box to type messages
+# Entry box to type messages
 entry = tk.Entry(root, width=50)
-entry.bind("<Return>", (lambda event: SendMessage()))
 entry.pack(pady=10)
 
-# Create a button to send messages
-send_button = tk.Button(root, text="Send", command=SendMessage, width=10)
+# Button to send messages
+send_button = tk.Button(root, text="Send", width=10)
 send_button.pack()
 
-sender.SetOnSend(EnterMessage)
+# Functionality
+send = sender.Sender(EnterMessage)
 
-# Start this in a thread so you can receive and send at the same time
+ip_field.bind("<Return>", (lambda event: send.Start(ip_field.get())))
+connect_button.configure(command=lambda: send.Start(ip_field.get()))
+
+entry.bind("<Return>", (lambda event: send.SendMessage(entry.get())))
+send_button.configure(command=lambda: send.SendMessage(entry.get()))
+
 receiver.SetOnReceive(EnterMessage)
 receiverThread = threading.Thread(target=receiver.Start)
 receiverThread.start()

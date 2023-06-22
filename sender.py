@@ -1,41 +1,43 @@
 import socket
+import threading
 import atexit
 import utility as util
 
-def SetOnSend(onSendFunc):
-    global onSend
-    onSend = onSendFunc
+class Sender:
+    def __init__(self, ShowMessageFunc):
+        self.ShowMessage = ShowMessageFunc
+        self.localhost = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-def SendMessage(message):
-    try:
-        # Show it in the entry box
-        onSend(message)
+        atexit.register(self.Disconnect) # If the user exits send a disconnect message
 
+    def SendData(self, length, data):
         # First send a message defining the length of the actual message
-        message = message.encode(util.FORMAT)
+        self.localhost.send(length)
+        self.localhost.send(data)
 
-        message_length = str(len(message)).encode(util.FORMAT)
-        message_length += b' ' * (util.HEADER - len(message_length))
+    def SendMessage(self, message):
+        try:
+            # Show it in the entry box
+            self.ShowMessage(message)
 
-        localhost.send(message_length)
-        localhost.send(message)
-        
-    except:
-        onSend("The destination cannot be reached")
+            message = message.encode(util.FORMAT)
+
+            message_length = str(len(message)).encode(util.FORMAT)
+            message_length += b' ' * (util.HEADER - len(message_length))
+
+            thread = threading.Thread(target=self.SendData, args=(message_length, message))
+            thread.start()
+            
+        except:
+            self.ShowMessage("The destination cannot be reached. The message wasn't sent")
 
 
-def Disconnect():
-    SendMessage(util.DISCONNECT_MESSAGE)
+    def Disconnect(self):
+        self.SendMessage(util.DISCONNECT_MESSAGE)
 
-localhost = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-atexit.register(Disconnect) # If the user exits send a disconnect message
-
-def Start(ip):
-    try:
-        localhost.connect((ip, util.PORT))
-        onSend(f"Connected to {ip}")
-    except:
-        onSend("Cannot reach this IP")
-
-if __name__ == '__main__':
-    Start()
+    def Start(self, ip):
+        try:
+            self.localhost.connect((ip, util.PORT))
+            self.ShowMessage(f"Connected to {ip}")
+        except:
+            self.ShowMessage("Cannot reach this IP")
