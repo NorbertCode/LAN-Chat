@@ -9,7 +9,7 @@ class Receiver:
 
         self.localhost.bind(('0.0.0.0', util.PORT))
 
-    def ReceiveMessage(self, connection, address, onReceive):
+    def ReceiveMessage(self, connection, address):
         while True:
             try:
                 message_len = connection.recv(util.HEADER).decode(util.FORMAT)
@@ -19,9 +19,12 @@ class Receiver:
                 if message == util.DISCONNECT_MESSAGE:
                     break
                 
-                onReceive(f"<{address[0]}>: {message}")
+                if message == util.JOINED_MESSAGE:
+                    self.ShowMessage(f"{address[0]} has joined")
+
+                self.ShowMessage(f"<{address[0]}>: {message}")
             except:
-                onReceive(f"Connection with {address[0]} has been lost")
+                self.ShowMessage(f"Connection with {address[0]} has been lost")
                 break
                 
         connection.close()
@@ -31,7 +34,7 @@ class Receiver:
         while True:
             try:
                 connection, address = self.localhost.accept()
-                thread = threading.Thread(target=self.ReceiveMessage, args=(connection, address, self.ShowMessage))
+                thread = threading.Thread(target=self.ReceiveMessage, args=(connection, address))
                 thread.start()
             except:
                 self.ShowMessage("An error has occured")

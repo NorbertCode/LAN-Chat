@@ -1,4 +1,6 @@
 PORT = 9999
 HEADER = 64
 FORMAT = "utf-8"
-DISCONNECT_MESSAGE = "disconnect"
+
+DISCONNECT_MESSAGE = "!disconnect"
+JOINED_MESSAGE = "!joined"

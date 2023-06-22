@@ -15,10 +15,11 @@ class Sender:
         self.localhost.send(length)
         self.localhost.send(data)
 
-    def SendMessage(self, message):
+    def SendMessage(self, message, showLocally = True):
         try:
             # Show it in the entry box
-            self.ShowMessage(message)
+            if showLocally:
+                self.ShowMessage(message)
 
             message = message.encode(util.FORMAT)
 
@@ -38,6 +39,8 @@ class Sender:
     def Start(self, ip):
         try:
             self.localhost.connect((ip, util.PORT))
+
             self.ShowMessage(f"Connected to {ip}")
+            self.SendMessage(util.JOINED_MESSAGE, False)
         except:
             self.ShowMessage("Cannot reach this IP")
