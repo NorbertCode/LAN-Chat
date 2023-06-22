@@ -43,8 +43,8 @@ connect_button.configure(command=lambda: send.Start(ip_field.get()))
 entry.bind("<Return>", (lambda event: send.SendMessage(entry.get())))
 send_button.configure(command=lambda: send.SendMessage(entry.get()))
 
-receiver.SetOnReceive(EnterMessage)
-receiverThread = threading.Thread(target=receiver.Start)
+receive = receiver.Receiver(EnterMessage)
+receiverThread = threading.Thread(target=receive.Start)
 receiverThread.start()
 
 # Run the app
