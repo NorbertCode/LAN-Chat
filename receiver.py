@@ -21,6 +21,7 @@ class Receiver:
                 
                 if message == util.JOINED_MESSAGE:
                     self.ShowMessage(f"{address[0]} has joined")
+                    break
 
                 self.ShowMessage(f"<{address[0]}>: {message}")
             except:
