@@ -5,6 +5,7 @@ import utility as util
 
 class Sender:
     def __init__(self, ShowMessageFunc):
+        self.connected = False
         self.ShowMessage = ShowMessageFunc
         self.localhost = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -34,11 +35,13 @@ class Sender:
 
 
     def Disconnect(self):
-        self.SendMessage(util.DISCONNECT_MESSAGE)
+        if self.connected:
+            self.SendMessage(util.DISCONNECT_MESSAGE)
 
     def Start(self, ip):
         try:
             self.localhost.connect((ip, util.PORT))
+            self.connected = True
 
             self.ShowMessage(f"Connected to {ip}")
             self.SendMessage(util.JOINED_MESSAGE, False)

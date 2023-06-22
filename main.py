@@ -44,7 +44,7 @@ entry.bind("<Return>", (lambda event: send.SendMessage(entry.get())))
 send_button.configure(command=lambda: send.SendMessage(entry.get()))
 
 receive = receiver.Receiver(EnterMessage)
-receiverThread = threading.Thread(target=receive.Start)
+receiverThread = threading.Thread(target=receive.Start, daemon=True)
 receiverThread.start()
 
 # Run the app
