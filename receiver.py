@@ -37,5 +37,5 @@ class Receiver:
                 connection, address = self.localhost.accept()
                 thread = threading.Thread(target=self.ReceiveMessage, args=(connection, address))
                 thread.start()
-            except:
-                self.ShowMessage("An error has occured")
+            except Exception as e:
+                self.ShowMessage(str(e))

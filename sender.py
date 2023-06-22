@@ -29,8 +29,8 @@ class Sender:
             thread = threading.Thread(target=self.SendData, args=(message_length, message))
             thread.start()
             
-        except:
-            self.ShowMessage("The destination cannot be reached. The message wasn't sent")
+        except Exception as e:
+            self.ShowMessage(str(e))
 
 
     def Disconnect(self):
@@ -42,5 +42,5 @@ class Sender:
 
             self.ShowMessage(f"Connected to {ip}")
             self.SendMessage(util.JOINED_MESSAGE, False)
-        except:
-            self.ShowMessage("Cannot reach this IP")
+        except Exception as e:
+            self.ShowMessage(str(e))
