@@ -27,18 +27,13 @@ class Sender:
             message_length = str(len(message)).encode(util.FORMAT)
             message_length += b' ' * (util.HEADER - len(message_length))
 
-            thread = threading.Thread(target=self.SendData, args=(message_length, message))
-            thread.start()
+            sendThread = threading.Thread(target=self.SendData, args=(message_length, message))
+            sendThread.start()
             
         except Exception as e:
             self.ShowMessage(str(e))
 
-
-    def Disconnect(self):
-        if self.connected:
-            self.SendMessage(util.DISCONNECT_MESSAGE)
-
-    def Start(self, ip):
+    def Connect(self, ip):
         try:
             self.localhost.connect((ip, util.PORT))
             self.connected = True
@@ -47,3 +42,15 @@ class Sender:
             self.SendMessage(util.JOINED_MESSAGE, False)
         except Exception as e:
             self.ShowMessage(str(e))
+
+    def Disconnect(self):
+        if self.connected:
+            self.SendMessage(util.DISCONNECT_MESSAGE)
+
+    def Start(self, ip):
+        self.ShowMessage("Connecting...")
+        
+        # Handle connecting on a separate thread, so the program still responds while connecting
+        connectThread = threading.Thread(target=lambda: self.Connect(ip))
+        connectThread.start()
+        
