@@ -17,6 +17,7 @@ class Receiver:
 
                 message = connection.recv(message_len).decode(util.FORMAT)
                 if message == util.DISCONNECT_MESSAGE:
+                    self.ShowMessage(f"{address[0]} has disconnected")
                     break
                 
                 if message == util.JOINED_MESSAGE:
