@@ -44,8 +44,14 @@ class Sender:
     def Disconnect(self):
         if self.connected:
             self.connected = False
-            self.ShowMessage("Disconnecting...")
             self.SendMessage(util.DISCONNECT_MESSAGE, False)
+
+            # This throws an error if the disconnect is caused by closing the program
+            # In that case you don't need to communicate it locally
+            try:
+                self.ShowMessage("Disconnecting...")
+            except:
+                pass
 
     def Start(self, ip):
         self.ShowMessage("Connecting...")
