@@ -20,7 +20,7 @@ class Sender:
     def SendMessage(self, message, showLocally = True):
         # Show it in the entry box
         if showLocally:
-            self.ShowMessage(message)
+            self.ShowMessage(f"<You>: {message}")
 
         message = message.encode(util.FORMAT)
 
